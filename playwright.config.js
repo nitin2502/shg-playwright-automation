@@ -7,10 +7,10 @@ export default defineConfig({
 
     use: {
         baseURL: 'https://uat-shg.shauryatechnosoft.com',
-        headless: false,
-        slowMo: 10000,
+        headless: true,
+        slowMo: 1000,
         viewport: { width: 1280, height: 720 },
-        actionTimeout: 15000,
+        actionTimeout: 10000,
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
