@@ -17,7 +17,7 @@ export class LoginPage {
 
         await this.loginBtn.click();
 
-        await this.page.waitForURL('**/dashboard', { timeout: 10000 });
+        await this.page.waitForURL('**/dashboard', { timeout: 5000 });
     }
 }
 

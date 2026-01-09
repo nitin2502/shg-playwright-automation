@@ -19,7 +19,7 @@ test('Edit member SATHEESH G', async ({ page }) => {
 
     // -------- Member Edit ----------
     try {
-        await memberPage.editMemberByName('Mr. MOHD JAMEEL');
+        await memberPage.editMemberByName('Mr. MOHD JAME');
     } catch (e) {
         console.error('❌ Edit member failed:', e.message);
     }

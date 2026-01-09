@@ -7,7 +7,7 @@ export default defineConfig({
 
     use: {
         baseURL: 'https://uat-shg.shauryatechnosoft.com',
-        headless: false,
+        headless: true,
         slowMo: 1000,
         viewport: { width: 1280, height: 720 },
         actionTimeout: 10000,
