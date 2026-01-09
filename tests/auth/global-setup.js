@@ -2,7 +2,7 @@ import { chromium } from '@playwright/test';
 import { LoginPage } from '../../pages/LoginPage.js';
 
 async function globalSetup() {
-    const browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext();
     const page = await context.newPage();
 
