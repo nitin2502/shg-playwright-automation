@@ -1,30 +1,32 @@
-export  class  FamilyMembersPage{
+import { faker } from '@faker-js/faker';
+
+export class FamilyMembersPage {
     constructor(page) {
         this.page = page;
-        //Input locator
+
+        // Input locators
         this.annualIncome = page.getByPlaceholder('Family Annual Income');
         this.rationCardNo = page.getByPlaceholder('Enter ration card №');
         this.addressLine = page.getByPlaceholder('Enter complete address with landmarks');
-        //Radio Buttons
+
+        // Radio Buttons
         this.rationCardType = (type) =>
             page.locator(`//span[normalize-space()='${type}']`);
 
-
-        //FileUploads
+        // File Uploads
         this.rationCardFrontPhoto = page.locator("input[type='file']").nth(0);
-        this.rationCardBackPhoto = page.locator("input[type='file']").nth(1);
+        this.rationCardBackPhoto  = page.locator("input[type='file']").nth(1);
 
-        //Button
+        // Buttons
         this.saveFamily = page.getByRole('button', { name: 'Save Family' });
         this.nextButton = page.getByRole('button', { name: 'Next' });
         this.saveBtn = page.getByRole('button', { name: 'Save' });
-        this.addBankAccontBTN= page.getByRole('button', { name: 'Add Bank Account' });
+        this.addBankAccontBTN = page.getByRole('button', { name: 'Add Bank Account' });
         this.submitButton = page.getByRole('button', { name: 'Submit' });
-
     }
-    async fillFamilyDetails(){
 
-        //Dropdown
+    async fillFamilyDetails() {
+        // Dropdowns
         await this.page.locator("xpath=//*[contains(text(),'Select Landholding Category')]")
             .click({ force: true });
         await this.page.locator("xpath=//*[text()='Marginal']").click();
@@ -33,34 +35,44 @@ export  class  FamilyMembersPage{
             .click({ force: true });
         await this.page.locator("xpath=//*[text()='Trade / Small Business']").click();
 
-        //Annnual Income
-        await this.annualIncome.fill('75000');
+        // 🔹 Faker inputs (UPDATED ONLY)
+        await this.annualIncome.fill(faker.number.int({ min: 50000, max: 200000 }).toString());
+        await this.page.waitForTimeout(1000);
         await this.rationCardType('PHH').click();
-        await this.rationCardType('AAY').click();
-        await this.rationCardType('APL').click();
-        await this.rationCardNo.fill("RC123456789");
+
+        await this.rationCardNo.fill(
+            'RC' + faker.string.numeric(10)
+        );
     }
-async uploadRationDocument (frontPath, backPath) {
- await this.rationCardFrontPhoto.setInputFiles(frontPath);
- await this.rationCardBackPhoto.setInputFiles(backPath);
-}
-async saveAndNext () {
-        await  this.saveFamily.click();
+
+    async uploadRationDocument(frontPath, backPath) {
+        await this.rationCardFrontPhoto.setInputFiles(frontPath);
+        await this.rationCardBackPhoto.setInputFiles(backPath);
+    }
+
+    async saveAndNext() {
+        await this.page.waitForTimeout(1000);
+        await this.saveFamily.click();
+        await this.page.waitForTimeout(1000);
         await this.nextButton.click();
+    }
 
-}
-async AddressInformation (){
-await this.addressLine.fill('House / Flat: 45B\n' +
-    'Building / Society: Sai Krupa Residency\n' +
-    'Street / Area: 2nd Cross, Jayanagar 4th Block\n' +
-    'PIN Code: 560011\n' +
-    'Country: India');
-    await this.saveBtn.click();
-    await this.nextButton.click();
-}
-async bankAccount(){
-await this.addBankAccontBTN.click();
-await this.submitButton.click();
-}
+    async AddressInformation() {
+        // 🔹 Faker address (UPDATED ONLY)
+        const address =
+            `House / Flat: ${faker.location.buildingNumber()}\n` +
+            `Building / Society: ${faker.company.name()}\n` +
+            `Street / Area: ${faker.location.streetAddress()}\n` +
+            `PIN Code: ${faker.location.zipCode('######')}\n` +
+            `Country: India`;
 
+        await this.addressLine.fill(address);
+        await this.saveBtn.click();
+        await this.nextButton.click();
+    }
+
+    async bankAccount() {
+        await this.addBankAccontBTN.click();
+        await this.submitButton.click();
+    }
 }

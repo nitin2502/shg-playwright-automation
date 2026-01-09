@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 export class EditMemberPersonalInfoPage {
     constructor(page) {
         this.page = page;
@@ -7,32 +9,33 @@ export class EditMemberPersonalInfoPage {
         this.email = page.getByPlaceholder('Enter your email');
         this.alternateMobile = page.getByPlaceholder('Alternate Mobile №');
 
-
         // Radio buttons
         this.disabilityNo = page.getByRole('radio', { name: /no/i });
 
         this.nextButton = page.getByRole('button', { name: 'Next' });
-
-
-
     }
 
     // ---------- WAITS ----------
     async waitForPage() {
-
+        // keep as-is (if already working)
     }
 
     // ---------- ACTIONS ----------
-        page;
     async fillPersonalInformation() {
         await this.waitForPage();
+
         await this.page.locator("xpath=//*[contains(text(),'Select Marital Status')]")
             .click({ force: true });
         await this.page.locator("xpath=//*[text()='Married']").click();
 
-        await this.maternalName.fill('Saraswati');
-        await this.email.fill('satheesh.auto@test.com');
-        await this.alternateMobile.fill('9876543210');
+        // 🔹 Faker inputs (UPDATED)
+        await this.maternalName.fill(faker.person.firstName());
+        await this.email.fill(faker.internet.email());
+        await this.alternateMobile.fill(
+            faker.helpers.arrayElement(['6', '7', '8', '9']) +
+            faker.string.numeric(9)
+        );
+
 
         await this.page.locator("xpath=//*[contains(text(),'Select Religion')]")
             .click({ force: true });
@@ -64,5 +67,4 @@ export class EditMemberPersonalInfoPage {
     async clickNext() {
         await this.nextButton.click();
     }
-
 }
